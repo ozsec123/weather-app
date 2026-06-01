@@ -25,7 +25,7 @@ async function getWeather() {
   windEl.textContent = "Loading wind...";
 
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${longitude}&longitude=${latitude}&current_weather=true`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -33,8 +33,8 @@ async function getWeather() {
     }
     const data = await response.json();
 
-    temperatureEl.textContent = `Temperature: ${data.current.temperature}°C`;
-    windEl.textContent = `Wind Speed: ${data.current_weather.windspeed} km/h`;
+    temperatureEl.textContent = `Temperature: ${data.current_weather && data.current_weather.temperature}°C`;
+    windEl.textContent = `Wind Speed: ${data.current_weather && data.current_weather.windspeed} km/h`;
   } catch (error) {
     temperatureEl.textContent = "Could not load weather.";
     windEl.textContent = "Please try again.";
