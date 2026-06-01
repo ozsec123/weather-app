@@ -28,6 +28,9 @@ async function getWeather() {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${longitude}&longitude=${latitude}&current_weather=true`;
 
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Weather request failed: ${response.status}`);
+    }
     const data = await response.json();
 
     temperatureEl.textContent = `Temperature: ${data.current.temperature}°C`;
