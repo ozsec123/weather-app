@@ -2,10 +2,15 @@ const timeEl = document.getElementById("time");
 const temperatureEl = document.getElementById("temperature");
 const windEl = document.getElementById("wind");
 const refreshBtn = document.getElementById("refreshBtn");
+const locationSelect = document.getElementById("locationSelect");
 
-// San Francisco coordinates
-const latitude = 37.7749;
-const longitude = -122.4194;
+// Available locations
+const locations = {
+  sf: { latitude: 37.7749, longitude: -122.4194, label: "San Francisco" },
+  italy: { latitude: 41.9028, longitude: 12.4964, label: "Rome, Italy" }
+};
+
+let currentLocation = locations.sf;
 
 function updateTime() {
   const now = new Date();
@@ -25,6 +30,7 @@ async function getWeather() {
   windEl.textContent = "Loading wind...";
 
   try {
+    const { latitude, longitude } = currentLocation;
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
 
     const response = await fetch(url);
@@ -43,6 +49,11 @@ async function getWeather() {
 }
 
 refreshBtn.addEventListener("click", getWeather);
+
+locationSelect?.addEventListener("change", (event) => {
+  currentLocation = locations[event.target.value] || locations.sf;
+  getWeather();
+});
 
 updateTime();
 setInterval(updateTime, 1000);
